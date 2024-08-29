@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/clock.css">
+    <title>Clock Online</title>
+</head>
+<body>
+    <div id="clock">
+        <p class="date">{{ date }}</p>
+        <p class="time">{{ time }}</p>
+        <p class="tetxt">Dung Six Hundred And Fifty TOEIC</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.38/vue.global.prod.min.js"></script>
+
+    <!-- Your custom JavaScript code -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        time: "",
+                        date: ""
+                    };
+                },
+                mounted() {
+                    this.updateTime(); 
+                    setInterval(this.updateTime, 1000); 
+                },
+                methods: {
+                    updateTime() {
+                        const cd = new Date();
+                        this.time = 
+                            this.zeroPadding(cd.getHours(), 2) + ":" +
+                            this.zeroPadding(cd.getMinutes(), 2) + ":" +
+                            this.zeroPadding(cd.getSeconds(), 2);
+                        this.date = 
+                            this.zeroPadding(cd.getFullYear(), 4) + "_" +
+                            this.zeroPadding(cd.getMonth() + 1, 2) + "_" + 
+                            this.zeroPadding(cd.getDate(), 2) + " " +
+                            this.weekDay(cd);
+                    },
+                    zeroPadding(num, digit) {
+                        return num.toString().padStart(digit, '0');
+                    },
+                    weekDay(date) {
+                        const week = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+                        return week[date.getDay()];
+                    }
+                }
+            });
+
+            app.mount('#clock');
+        });
+    </script>
+</body>
+</html>
